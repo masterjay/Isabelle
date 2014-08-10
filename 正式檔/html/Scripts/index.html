@@ -1,0 +1,197 @@
+﻿<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>伊莎貝爾X皇樓 週週送您限量中秋禮</title>
+    <link href="css/style.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="js/swfobject.js"></script>
+    <script type="text/javascript" src="js/BrowserDetect.js"></script>
+    <script type="text/javascript" src="Scripts/swfobject_modified.js"></script>
+    <script type="text/javascript" src="js/default.js"></script>
+
+    <meta property="og:site_name" content="伊莎貝爾X皇樓 週週送您限量中秋禮" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="史上最大的中秋祝福 週週抽伊莎貝爾" />
+    <meta property="og:url" content="http://www.isabelle.com.tw/mooncake2014/" />
+    <meta property="og:image" content="http://www.isabelle.com.tw/mooncake2014/images/fb.png" />
+    <link rel="image_src" href="http://www.isabelle.com.tw/mooncake2014/images/fb.png" />
+    <meta property="og:description" content="把全台灣、全世界、全宇宙的祝福，通通送上伊莎貝爾X皇樓的月餅星球，讓你對他的祝福，成就史上最大著中秋祝福!現在參加，週週抽出20名，贈送限量中秋禮盒---立即送祝福，缺你不可!" />
+
+    <style type="text/css" media="screen">
+        #flashContent {
+            position: absolute;
+            left: 0px;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            /* min-width: 1280px;
+            min-height: 720px;
+            min-height: 768px;*/
+            overflow: hidden;
+        }
+
+        html {
+            position: relative;
+            height: 100%;
+        }
+
+        ,
+        body {
+            position: relative;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="flashContent">
+        <div id="wrapper">
+            <div>
+                <noscript>
+                    <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" width="100%" height="100%" id="isabelle" align="middle">
+                        <param name="movie" value="isabelle.swf" />
+                        <param name="quality" value="best" />
+                        <param name="bgcolor" value="#ffffff" />
+                        <param name="play" value="true" />
+                        <param name="loop" value="true" />
+                        <param name="wmode" value="transparent" />
+                        <param name="scale" value="showall" />
+                        <param name="menu" value="true" />
+                        <param name="devicefont" value="false" />
+                        <param name="salign" value="" />
+                        <param name="allowScriptAccess" value="sameDomain" />
+                        <!--[if !IE]>-->
+                        <object type="application/x-shockwave-flash" width="100%" height="100%" align="middle">
+                            <param name="movie" value="isabelle.swf" />
+                            <param name="quality" value="best" />
+                            <param name="bgcolor" value="#ffffff" />
+                            <param name="play" value="true" />
+                            <param name="loop" value="true" />
+                            <param name="wmode" value="transparent" />
+                            <param name="scale" value="showall" />
+                            <param name="menu" value="true" />
+                            <param name="devicefont" value="false" />
+                            <param name="salign" value="" />
+                            <param name="allowScriptAccess" value="sameDomain" />
+                            <!--[endif]-->
+                            <a href="http://www.adobe.com/go/getflash">
+                                <img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" />
+                            </a>
+                            <!--[if !IE]>-->
+                        </object>
+                        <!--<![endif]-->
+                    </object>
+                </noscript>
+            </div>
+        </div><!-- wrapper end -->
+    </div>
+
+    <script type="text/javascript">
+          var WX,WY;
+					if( window.innerWidth )
+					{
+					    WX = window.innerWidth;
+					    WY = window.innerHeight;
+					} else {
+					    WX = document.body.clientWidth;
+					    WY = document.body.clientHeight;
+					}
+
+					console.log(WX,WY);
+            var flashvars = {};
+         //   flashvars.as_swf_name = "flashInner";
+					//	flashvars.lang = "en";
+            flashvars.WX = WX;
+            flashvars.WY = WY;
+            flashvars.host = "conn/";
+
+
+            var params = {};
+         //   params.swLiveConnect 		= "true";
+            params.allowScriptAccess 	= "always";
+            params.allowFullScreen		= "false";
+            params.wmode = "opaque";
+
+            var attributes = {};
+    				attributes.align = "middle";
+            swfobject.embedSWF("ISABELLE.swf", "flashContent", "100%", "100%", "10.2.0", "expressInstall.swf",flashvars,params,attributes);
+    </script>
+    <script type="text/javascript">
+swfobject.registerObject("FlashID");
+    </script>
+
+    <script type="text/javascript">
+        window.onresize = fnOnResize;
+   //     window.onresize = function(event) {
+        function fnOnResize(event)
+        {
+        	 var nVer = navigator.appVersion;
+            var nAgt = navigator.userAgent;
+            console.log("resize");
+        	var bBeforeIE9 = false;
+            var bIE = false;
+            // In Internet Explorer, the true version is after "MSIE" in userAgent
+            if ((verOffset = nAgt.indexOf("MSIE")) != -1)
+            {
+                bIE = true;
+                var fullVersion = 0;
+                var majorVersion = 0;
+                fullVersion = parseFloat(nAgt.substring(verOffset + 5));
+                majorVersion = parseInt('' + fullVersion);
+                if (majorVersion < 9)
+                {
+                    bBeforeIE9 = true;
+                }
+            }
+            
+           /* if (bIE)
+            {
+                if (bBeforeIE9)
+                {
+                    fnResizeFlashIE(document.body.clientWidth, document.body.clientHeight);
+                }
+                else
+                {
+                //    fnResizeFlash(window.innerWidth, window.innerHeight)
+                }
+            }
+            else
+            {
+              //  fnResizeFlash(window.innerWidth, window.innerHeight)
+            }*/
+             console.log("get ")
+        	 var flashApp = document.getElementById('flashContent');
+        	 console.log("get " +flashApp)
+        	 console.log(document.body.clientWidth,document.body.clientHeight)
+        	 var newWidth = document.body.clientWidth;
+					 var newHeight = document.body.clientHeight  ;
+        	  flashApp.fnSwfResize(newWidth, newHeight);
+        	  flashApp.fnSwfResize2(newWidth, newHeight);
+       	// 	flashApp.setAttribute("width", "800");
+        	//console.log(flashApp.x)
+        }
+	
+       /* function fnResizeFlashIE(nW, nH) {
+            var flashApp = document.getElementById('Login');
+            if (nW >= 800) {
+                flashApp.setAttribute("width", "100%");
+            }
+            else {
+                flashApp.setAttribute("width", "800");
+            }
+            if (nH >= 600) {
+                flashApp.setAttribute("height", "100%");
+            }
+            else {
+                flashApp.setAttribute("height", "600");
+            }
+        }*/
+    </script>
+</body>
+</html>

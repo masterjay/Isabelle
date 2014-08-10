@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+</head>
+<body>
+
+<form id="form1" name="form1" method="post" action="AddMessage.aspx">
+    <table id="tb" cellpadding="4" cellspacing="4">
+        <tr>
+            <td style="width:80px; text-align:right;">暱稱</td>
+            <td><input name="surname" size="50" type="text" id="surname" value="阿里巴巴" /></td>
+        </tr>
+        <tr>
+            <td style=" text-align:right;">祝福的話</td>
+            <td><textarea id="blessing" name="blessing" rows="5" cols="50">中秋到了，送你一個月餅。第一層：財運！第二層：幸運！第三層：福運！中間夾層：甜蜜！祝你天天都有好心情！永遠開心！
+
+月很圓，花更香，保重身體要健康；魚在游，鳥在叫，願你天天哈哈笑；預祝中秋節快樂！
+
+</textarea></td>
+        </tr>
+        <tr>
+            <td style=" text-align:right;">真實姓名</td>
+            <td><input name="name" type="text" id="name" value="四十大盜" /></td>
+        </tr>
+        <tr>
+            <td style=" text-align:right;">手機</td>
+            <td><input name="mobile" type="text" id="mobile" value="0987654321" /></td>
+        </tr>
+        <tr>
+            <td style=" text-align:right;">Email</td>
+            <td><input name="email" type="text" id="email" value="scott@drowl.com.tw" /></td>
+        </tr>
+        <tr>
+            <td style=" text-align:right;">寄送地址</td>
+            <td><input name="address" type="text" id="address" value="台北市大同區重慶北路一段83巷26號1樓" /></td>
+        </tr>
+        <tr>
+            <td style=" text-align:right;">是否有中秋送禮需求</td>
+            <td>
+                <input type="radio" checked="checked" value="是" id="isrequirement" name="isrequirement">是 
+                <input type="radio" value="否" id="isrequirement" name="isrequirement">否
+            </td>
+        </tr>
+        <tr>
+            <td style=" text-align:right;">送禮需求盒數</td>
+            <td>
+                <input type="radio" value="0" id="requirementqty" name="requirementqty">0
+                <input type="radio" value="5" id="requirementqty" name="requirementqty">5
+                <input type="radio" value="10" id="requirementqty" name="requirementqty">10
+                <input type="radio" value="15" id="requirementqty" name="requirementqty">15
+                <input type="radio" value="20" id="requirementqty" name="requirementqty">20
+                <input type="radio" checked="checked" value="20以上" id="requirementqty" name="requirementqty">20以上
+            </td>
+        </tr>
+        <tr>
+            <td style=" text-align:right;">是否願意門市人員主動聯繫您</td>
+            <td>
+                <input type="radio" value="是" id="isneedcontact" name="isneedcontact">是
+                <input type="radio" checked="checked" value="否" id="isneedcontact" name="isneedcontact">否
+            </td>
+        </tr>
+        <tr>
+            <td style=" text-align:right;"></td>
+            <td><input type="submit" name="btSend" id="btSend" value="送出" /></td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>
