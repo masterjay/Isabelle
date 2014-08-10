@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="400" height="300" xmlns:local="*" creationComplete="group1_creationCompleteHandler(event)">
+	<fx:Script>
+		<![CDATA[
+			import flash.filters.DisplacementMapFilter;
+			
+			import mx.controls.Text;
+			import mx.core.UIComponent;
+			import mx.events.FlexEvent;
+			
+			import fl.core.UIComponent;
+			
+			import lib.AppSetting;
+			private var m_txt:TextField =new TextField();	
+			protected function group1_creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				mcPlant.addEventListener(Event.ENTER_FRAME,fnOnEnterFrame);
+				mcPlant.gotoAndPlay(1)
+				mcTotal.txt_total.text = "";
+				
+				//m_txt.background=true;
+				//txt.backgroundColor=0xff0000;
+				m_txt.width=104;
+				m_txt.height=27.45;
+				m_txt.rotationZ = 15;
+				m_txt.textColor = 0xD8BF7F
+				m_txt.autoSize = TextFieldAutoSize.CENTER 
+				var format:TextFormat = new TextFormat();
+				format.size = 21;
+				
+				
+				m_txt.defaultTextFormat = format
+				//m_txt.textColor = 0xFFFFFF
+				var uiContainer:mx.core.UIComponent =new mx.core.UIComponent();
+				uiContainer.addChild(m_txt);
+				this.addElement(uiContainer);
+				
+			}
+			
+			private function fnOnEnterFrame(e:Event):void
+			{
+				var mcPlanet_s:MovieClip = mcPlant.getChildByName("planet_s") as MovieClip;
+				if(mcPlanet_s)
+				{
+					var mcTxt:TextField = mcPlanet_s.getChildByName("textTotal") as TextField;
+					if(mcTxt)
+					{
+					//	mcTotal.x = mcTxt.x + mcTxt.parent.x
+					//	mcTotal.y = mcTxt.y + mcTxt.parent.y
+						//txt.rotationZ = mcTxt.rotation
+						m_txt.x = mcTxt.x + mcTxt.parent.x -12
+						m_txt.y = mcTxt.y + mcTxt.parent.y - 5
+					}
+				}
+				
+			}
+			
+			public function fnSetTotalText():void
+			{
+				//mcTotal.txt_total.text = AppSetting.m_customerHashMap.size().toString();
+				m_txt.text=AppSetting.m_customerHashMap.size().toString();
+			}
+			
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	<local:planet_s_mc id="mcPlant" x="0"/>
+	<local:plant_total id="mcTotal" visible="false"/>
+	
+</s:Group>

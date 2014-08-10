@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="400" height="300" xmlns:local="*" creationComplete="group1_creationCompleteHandler(event)">
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			
+			import lib.TiDisableTextField;
+			
+			protected function group1_creationCompleteHandler(event:FlexEvent):void
+			{
+				Security.allowDomain("*");
+				// TODO Auto-generated method stub
+				TiDisableTextField.fnSetButtonAndDisableAllTextField(mcFooter.btn_activity);
+				TiDisableTextField.fnSetButtonAndDisableAllTextField(mcFooter.btn_issabelle);
+				TiDisableTextField.fnSetButtonAndDisableAllTextField(mcFooter.btn_emperor);
+				TiDisableTextField.fnSetButtonAndDisableAllTextField(mcFooter.btn_present);
+				TiDisableTextField.fnSetButtonAndDisableAllTextField(mcFooter.btn_stores);
+				TiDisableTextField.fnSetButtonAndDisableAllTextField(mcFooter.btn_list);
+				TiDisableTextField.fnSetButtonAndDisableAllTextField(mcFooter.fb_issbelle);
+				TiDisableTextField.fnSetButtonAndDisableAllTextField(mcFooter.fb_emperor);
+				TiDisableTextField.fnSetButtonAndDisableAllTextField(mcFooter.logo_isabelle);
+				TiDisableTextField.fnSetButtonAndDisableAllTextField(mcFooter.logo_emperor);
+				
+				mcFooter.btn_activity.addEventListener(MouseEvent.CLICK,fnActivityHandler);
+				mcFooter.btn_issabelle.addEventListener(MouseEvent.CLICK,fnIssabelleHandler);
+				mcFooter.btn_emperor.addEventListener(MouseEvent.CLICK,fnEmperorHandler);
+				mcFooter.btn_present.addEventListener(MouseEvent.CLICK,fnPresentHandler);
+				mcFooter.btn_stores.addEventListener(MouseEvent.CLICK,fnStoresHandler);
+				mcFooter.btn_list.addEventListener(MouseEvent.CLICK,fnListHandler);
+				mcFooter.fb_issbelle.addEventListener(MouseEvent.CLICK,fnFBIssabelleHandler);
+				mcFooter.fb_emperor.addEventListener(MouseEvent.CLICK,fnFBEmperorHandler);
+				mcFooter.logo_isabelle.addEventListener(MouseEvent.CLICK,fnLogoIsabelleHandler);
+				mcFooter.logo_emperor.addEventListener(MouseEvent.CLICK,fnLogoEmperorHandler);
+			}
+			
+			protected function fnActivityHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				ExternalInterface.call("btnActivityClick");
+			}
+			
+			protected function fnIssabelleHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				ExternalInterface.call("btnIssaBelleClick");
+			}
+			
+			protected function fnEmperorHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				ExternalInterface.call("btnEmperorClick");
+			}
+			
+			protected function fnPresentHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				ExternalInterface.call("btnPresentClick");
+			}
+			
+			protected function fnStoresHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				ExternalInterface.call("btnStoresClick");
+			}
+			
+			protected function fnListHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				ExternalInterface.call("btnListClick");
+			}
+			
+			protected function fnFBIssabelleHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				ExternalInterface.call("btnFBIssabelleClick");
+			}
+			
+			protected function fnFBEmperorHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				ExternalInterface.call("btnFBEmperorClick");
+			}
+			
+			protected function fnLogoIsabelleHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				ExternalInterface.call("btnLogoIsabelleClick");
+			}
+			
+			protected function fnLogoEmperorHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				ExternalInterface.call("btnLogoEmperorClick");
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<local:links id="mcFooter"/>
+	
+</s:Group>

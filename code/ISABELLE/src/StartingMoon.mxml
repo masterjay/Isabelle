@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="400" height="300" creationComplete="group1_creationCompleteHandler(event)" xmlns:local="*" xmlns:ns="isabelle_fla.*">
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			import mx.flash.UIMovieClip;
+			import mx.managers.HistoryManager;
+			
+			import caurina.transitions.Tweener;
+			
+			import event.TiMoonCakeEvent;
+			
+			import handler.XmlDataHandler;
+			
+			import lib.AppSetting;
+			import lib.Customer;
+			import lib.TiDisableTextField;
+			
+			private var m_xmlDataHandler:XmlDataHandler = new XmlDataHandler();
+			//private var m_bReady:Boolean = false
+			private var m_myCustomer:Customer
+			private var m_tChangeScreen:Timer = new Timer(10000)
+			
+			public function fnReady():void
+			{
+				startmc.addEventListener(Event.ENTER_FRAME,fnStageReady);
+				startmc.gotoAndPlay(2);
+			}
+				
+			protected function group1_creationCompleteHandler(event:FlexEvent):void
+			{
+				AppSetting.m_RootDomain = AppSetting.DOMAIN
+				// TODO Auto-generated method stub
+				fnGetXmlData();
+				fnInit();
+				
+				
+				//mcMask.width = AppSetting.m_stageWidth;
+				//mcMask.height=AppSetting.m_stageHeight;
+				this.addEventListener(TiMoonCakeEvent.SWAP_DEPTH,fnSwapMoonDepth);
+			}
+			
+			private function fnStageReady(e:Event):void
+			{
+				var mc:UIMovieClip = e.currentTarget as UIMovieClip;
+				if(mc.currentFrame == mc.totalFrames)
+				{
+					mc.removeEventListener(Event.ENTER_FRAME,fnStageReady);
+					//m_bReady = true;
+					fnReadyInit();
+					//fnGetXmlData();
+				}
+			}
+			
+			
+			private function fnInit():void
+			{
+				
+				TiDisableTextField.fnSetButtonAndDisableAllTextField(mcbtnAddMessage);
+				mcbtnAddMessage.addEventListener(MouseEvent.CLICK,fnCreateNewMessagePanel);
+				
+			}
+			
+			private function fnReadyInit():void
+			{
+				m_tChangeScreen.addEventListener(TimerEvent.TIMER,fnChangeScreen)
+				m_tChangeScreen.start();
+				
+				allMoonCakeGp.visible = true;
+			}
+			
+			private function fnChangeScreen(e:TimerEvent):void
+			{
+				var ncurrentFrame:int
+				if(startmc.planet_mc)
+				{
+					ncurrentFrame = startmc.planet_mc.currentFrame
+					startmc.planet_mc.gotoAndPlay(ncurrentFrame+1);
+					
+				}
+				if(startmc.star_mc)
+				{
+					ncurrentFrame = startmc.star_mc.currentFrame
+					startmc.star_mc.gotoAndPlay(ncurrentFrame+1);
+				}
+				
+				if(bg.currentFrame == bg.totalFrames)
+				{
+					bg.gotoAndStop(1);
+				}
+				else
+				{
+					bg.nextFrame();
+				}
+				
+				
+				
+			}
+					
+			private function fnGetXmlData():void
+			{
+				m_xmlDataHandler.fnRequestMessageListXmlData();
+				m_xmlDataHandler.addEventListener(TiMoonCakeEvent.GET_XML_CUSTOMER_DATA,fnGetCustomerDataHandelr);
+			}
+			private function fnGetCustomerDataHandelr(e:TiMoonCakeEvent =null):void
+			{	trace("fnGetCustomerDataHandelr")
+				//if(m_bReady)
+				//{
+					fnInitAllMoonCake();
+			//	}
+				//else
+				//{
+				//	fnGetCustomerDataHandelr();
+			//	}
+			}
+			
+			
+			private function fnInitAllMoonCake():void
+			{
+				m_myCustomer = null
+				var moonCake:Customer
+				for each (var key:String in AppSetting.m_customerNewHashMap.keys())
+				{
+					var c:Customer =  AppSetting.m_customerNewHashMap.get(key);
+					if(c.m_customerId == AppSetting.m_myMessageId)
+					{
+						c.m_mySelf = true;
+					}
+					var po:Point = fnRanMoonPositon();
+				//	AppSetting.m_moveX = -100
+				//	AppSetting.m_moveY = -100
+				//	trace("AppSetting.m_moveX "+AppSetting.m_moveX )
+					
+					//po.x = po.x - AppSetting.m_moveX /2 
+					//po.y = po.y - AppSetting.m_moveY /2
+					//trace("po.x: "+po.x + "po.y :" + po.y)
+					moonCake = new MoonCakeAni();
+					moonCake.m_customerId = c.m_customerId;
+					moonCake.m_po = po;
+					moonCake.m_mySelf = c.m_mySelf;
+					moonCake.m_name = c.m_name
+					moonCake.m_phone = c.m_phone;
+					moonCake.m_email = c.m_email;
+					moonCake.m_message = c.m_message
+					moonCake.addEventListener(TiMoonCakeEvent.MOONCAKE_CLICK,fnMoonClickHandler);
+				//	moonCake.addEventListener(MouseEvent.MOUSE_OVER,fnSwapMoonDepth);
+					allMoonCakeGp.addElement(moonCake);
+				}
+				if(c.m_mySelf == true)
+				{
+					m_myCustomer = new Customer();
+					m_myCustomer = moonCake;
+					fnMoonClickHandler();
+				}
+				var ev:TiMoonCakeEvent =new TiMoonCakeEvent(TiMoonCakeEvent.READY,"",true)
+					dispatchEvent(ev);
+				mxPlant.fnSetTotalText();
+			}
+			
+			private function fnRanMoonPositon():Point
+			{
+				var po:Point = fnRanXY();
+				//po.x = po.x - AppSetting.m_moveX
+				//po.y = po.y - AppSetting.m_moveY
+				//return po;
+				var bHit:Boolean =false;
+				//return po;
+				if( mcMoonCakeStage.moonCakeStageInside.hitTestPoint(po.x,po.y,true))
+				{
+					bHit = true;
+					
+				}
+				
+				/*for(var i :int=1 ; i<= 10 ;i++)
+				{
+					if(( mcMoonCakeStage["moonCakeStage"+i].hitTestPoint(po.x,po.y,true) )== true)
+					{
+						bHit = true;
+						break
+					}
+				}*/
+				
+				if(bHit == false)
+				{
+					po = fnRanMoonPositon();
+				}
+				else
+				{
+					return po;
+				}
+				return po;
+			}
+			
+			private function fnRanXY():Point
+			{
+				
+				var ranX:Number =   mcMoonCakeStage.moonCakeStageInside.x +  Math.round(Math.random()* mcMoonCakeStage.moonCakeStageInside.width );
+				var ranY:Number =   mcMoonCakeStage.moonCakeStageInside.y +  Math.round(Math.random()* mcMoonCakeStage.moonCakeStageInside.height);
+				var po:Point = new Point(ranX,ranY);
+				trace("ranY" +ranY);
+				return po;
+			}
+			
+			private function fnMoonClickHandler(e:TiMoonCakeEvent=null):void
+			{
+				var ev:TiMoonCakeEvent =new TiMoonCakeEvent(TiMoonCakeEvent.MOONCAKE_CLICK,"",true)
+					if(e)
+					{
+						ev.m_customer =e.m_customer;					
+					}
+					else
+					{
+						ev.m_customer =m_myCustomer;
+					}
+					
+					dispatchEvent(ev)
+			//	var po:Point = AppSetting.fnMovePositionByScreenResolution(mxMsgPanel.mcMsg);
+			
+				/*mxMsgPanel.y = mxMsgPanel.height + mxMsgPanel.mcMsg.height
+				mxMsgPanel.visible = true;
+				mcMask.width = 2000
+				mcMask.height = 1500
+				
+				mcMask.visible = true;
+				//var newX:Number = 960 - mxMsgPanel.mcMsg.width/2
+				var newY:Number = mxMsgPanel.height - mxMsgPanel.mcMsg.height/2
+				if(e)
+				{
+					mxMsgPanel.fnSetMsg(e.m_customer);
+				}
+				else
+				{
+					mxMsgPanel.fnSetMsg(m_myCustomer);
+				}
+						
+				
+				Tweener.addTween(mxMsgPanel, {y:newY,alpha:1,time:1,onComplete:handleSwapEnd});*/
+			}
+			
+			private function handleSwapEnd():void
+			{
+			}
+			
+			/*	private function fnIsMoonCakeInStage(e:TiMoonCakeEvent):void
+			{
+			var bHit:Boolean = moonCakeStage.moonCakeStageInside.hitTestPoint(e.m_po.x,e.m_po.y);
+			
+			}*/
+			
+			
+			
+			/*private function fnClosePopupMessage(e:TiMoonCakeEvent):void
+			{
+				mcMask.visible =false;
+				mxMsgPanel.visible = false;
+				mxMsgPanel.alpha=0;
+			}*/
+			
+			private function fnChangeMoonCakeAmount():void
+			{
+				allMoonCakeGp.removeAllElements();
+				fnInitAllMoonCake();
+			}
+			
+			private function fnCreateNewMessagePanel(e:MouseEvent):void
+			{
+				
+				var ev:TiMoonCakeEvent =new TiMoonCakeEvent(TiMoonCakeEvent.POPUP_MSESSAGE,"",true);
+				dispatchEvent(ev);
+			}
+			
+			
+			
+			public function fnAddNewCustomerToServer(c:Customer):void
+			{
+					m_xmlDataHandler.fnAddNewCustomerToServer(c);
+			}
+			
+			/*private function fnAddNewCustomerHandler(e:TiMoonCakeEvent):void
+			{
+				var c:Customer = e.m_customer as Customer
+				var moonCake:MoonCakeAni
+				moonCake = new MoonCakeAni();
+				moonCake.m_name = c.m_name
+				moonCake.m_phone = c.m_phone;
+				moonCake.m_email = c.m_email;
+				moonCake.m_message = c.m_message
+				//	moonCake.addEventListener(TiMoonCakeEvent.MOONCAKE_CLICK,fnMoonClickHandler);
+				//	allMoonCakeGp.addElement(moonCake);
+			}*/
+			
+			private function fnSwapMoonDepth(e:TiMoonCakeEvent):void
+			{
+				var moon:Customer = e.m_customer;
+				allMoonCakeGp.addElementAt(moon,0);
+			}
+			
+			public function fnResize():void
+			{
+				//logo.x = -AppSetting.m_moveX - logo.width/2
+			//	logo.y = -AppSetting.m_moveY 
+				//resizeGp.x = AppSetting.m_moveX 
+				//resizeGp.y = AppSetting.m_moveY 
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<local:stagebg id="bg"/>
+	<!--<local:slagon_mc id="logo"/>-->
+	<s:Group y="0" id="resizeGp">
+		<local:starting_mc id="startmc" x="0" y="0"/>
+		<local:moonCakeStage id="mcMoonCakeStage" visible="false" />
+		<local:mc_footer y="0"/>
+		<local:Plant id="mxPlant"/>
+		<s:Group id="allMoonCakeGp" visible="false"/>
+		<local:btn_addmessage id="mcbtnAddMessage" x="0" y="0" />
+		<local:Footer id="mxFooter" y="0"/>
+<!--		<local:mask_message id="mcMask" visible="false" width="1920" height="1080" y="0"/>
+-->		<s:Group id="messageGp"/>
+		<!--<local:BlessMessage id="mxMsgPanel" visible="false"/>-->
+	</s:Group>
+	
+	
+</s:Group>

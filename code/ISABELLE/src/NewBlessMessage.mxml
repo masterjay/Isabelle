@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="400" height="300" xmlns:local="*" creationComplete="group1_creationCompleteHandler(event)">
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			
+			import event.TiMoonCakeEvent;
+			
+			import lib.Customer;
+			import lib.TiDisableTextField;
+			
+			protected function group1_creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				TiDisableTextField.fnDisableAllTextField(mcNewMessage);
+				mcNewMessage.btnSave.addEventListener(MouseEvent.CLICK,fnAddMessage);
+			}
+			
+			public function fnShowAddMessagePanel():void
+			{
+				mcNewMessage.txtName.text = "";
+				mcNewMessage.txtPhone.text= "";
+				mcNewMessage.txtEmail.text= "";
+			//	mcNewMessage.txtAddress.text= "";
+				mcNewMessage.txtMessage.text= "";
+				mcNewMessage.radioyes.selected = true;
+				mcNewMessage.radiono.selected = false;
+				mcNewMessage.visible = true;
+			}
+			
+			private function fnAddMessage(e:MouseEvent):void
+			{
+				var customer:Customer = new Customer();
+				customer.m_name = mcNewMessage.txtName.text;
+				customer.m_phone = mcNewMessage.txtPhone.text;
+				customer.m_email = mcNewMessage.txtEmail.text;
+				//customer.m_address = mcNewMessage.txtAddress.text;
+				customer.m_message = mcNewMessage.txtMessage.text;
+				
+				mcNewMessage.visible=false;
+				
+				var ev:TiMoonCakeEvent = new TiMoonCakeEvent(TiMoonCakeEvent.ADD_CUSTOMER_DATA);
+				ev.m_customer = customer
+				dispatchEvent(ev);
+			}
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<local:Lob_M_AddMessage id="mcNewMessage" visible="false"/>
+</s:Group>

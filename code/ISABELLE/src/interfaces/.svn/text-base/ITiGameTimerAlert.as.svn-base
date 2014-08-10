@@ -1,0 +1,15 @@
+package lib.interfaces
+{
+	import flash.display.MovieClip;
+	
+	public interface ITiGameTimerAlert
+	{
+		function fnSetComponent(timer:MovieClip,bInitVisable:Boolean = true):void
+		function fnSetTotalTime(nTime:Number):void
+		function fnSetTime(nValue:Number):void
+		function fnStartAlert():void
+		function fnBettingConfirmBetVoice():void
+		function fnStopGameTimer():void
+		function fnStartGame():void
+	}
+}

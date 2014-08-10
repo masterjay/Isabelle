@@ -1,0 +1,23 @@
+<catalog>
+  <customer customerId="0">
+    <name>QQ</name>
+    <phone>0939928988</phone>
+    <email>qq@gmail.com</email>
+    <address>興隆路二段325號</address>
+    <message>工作順利</message>
+   </customer>
+  <customer customerId="1">
+    <name>aries</name>
+    <phone>093992777</phone>
+    <email>aries@gmail.com</email>
+    <address>台北市文山區興隆路二段244巷12號</address>
+    <message>賺大錢</message>
+   </customer>
+  <customer customerId="2">
+    <name>mia</name>
+    <phone>098852777</phone>
+    <email>mia@gmail.com</email>
+    <address>台中市西屯區台中港路二段111號</address>
+    <message>加薪</message>
+  </customer>
+</catalog>

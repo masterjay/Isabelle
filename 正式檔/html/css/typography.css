@@ -1,0 +1,85 @@
+@charset "utf-8";
+body { background:#c9f0f7 url(../images/bg_star.png) fixed center top; color:#000; font:12px Microsoft JhengHei, Arial;}
+
+/* claer
+-------------------------- */
+.clearfix { clear:both;}
+.clearfix:after {content:"."; display:block; height:0; clear:both; visibility:hidden;}
+.clearfix {display: inline-block;}
+/* Hides from IE-mac \*/
+* html .clearfix { height: 1%;}
+.clearfix {display: block;}
+/* End hide from IE-mac */
+
+/* line
+-------------------------- */
+.line { width:520px; height:3px; margin:0 auto 3em; background:url(../images/line.png) repeat-x center center;}
+
+/* list
+-------------------------- */
+.list { width:520px; margin:0 auto 3em; }
+.list span { float:left; width:180px; display:block; text-align:center;}
+.list div { float:right; width:300px;}
+.list li { margin-bottom:1em; padding:1em;}
+.list li h4 { margin-bottom:.5em; font-size:1.25em; color:#cca134;}
+.list li p { margin-bottom:0; font-size:12px; line-height:1.75em; text-align:left;}
+.list li p span { float:none; width:auto; display:inline-block; color:#F00;}
+@media, { .list li { filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#ffffffff, endColorstr=#ffffffff); } } /* IE6/7 only media, */
+@media all\0 { .list li { filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#e5ffffff, endColorstr=#e5ffffff); } } /* IE8 only \0 */
+@media all and (monochrome:0) { .list li { background:rgba(256,256,256,0.5)\9; } } /* IE9 only \9 */
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {  .list li { background:rgba(256,256,256,0.5); } 
+} /* IE10 only */
+@media screen and (-webkit-min-device-pixel-ratio:0) { .list li { background:rgba(256,256,256,0.5);}} /* chrome only */
+@-moz-document url-prefix() { .list li { background:rgba(256,256,256,0.5);}} /* firefox only */
+
+/* home
+-------------------------- */
+.home { width:100%; height:100%; margin:0 auto;}
+
+/* mode
+-------------------------- */
+.mode { padding-top:250px;}
+.mode h3 { margin-bottom:1.5em; text-align:center; font-size:1.5em; color:#cca134;}
+.mode p { margin-bottom:1.5em; text-align:center; font-size:1.25em; line-height:1.75em;}
+.mode a,.mode a:visited,.mode a:active { color:#000; text-decoration:underline;}
+.mode a:hover { color:#cca134;}
+.mode ol li { margin:0 0 1.5em 1.5em; list-style: decimal;}
+
+/* isabelle
+-------------------------- */
+.isabelle { padding-top:250px;}
+.isabelle h3 { margin-bottom:1.5em; text-align:center; font-size:1.5em; color:#cca134;}
+.isabelle p { margin-bottom:1.5em; text-align:center; font-size:1.25em; line-height:1.75em;}
+.isabelle a,.isabelle a:visited,.isabelle a:active { color:#000; text-decoration:underline;}
+.isabelle a:hover { color:#cca134;}
+
+/* emperor
+-------------------------- */
+.emperor { padding-top:250px;}
+.emperor h3 { margin-bottom:1.5em; text-align:center; font-size:1.5em; color:#cca134;}
+.emperor p { margin-bottom:1.5em; text-align:center; font-size:1.25em; line-height:1.75em;}
+.emperor a,.emperor a:visited,.emperor a:active { color:#000; text-decoration:underline;}
+.emperor a:hover { color:#cca134;}
+
+/* winners
+-------------------------- */
+.winners { padding-top:250px;}
+.winners h3 { margin-bottom:1.5em; text-align:center; font-size:1.5em; color:#cca134;}
+.winners p { margin-bottom:1.5em; text-align:center; font-size:1.25em; line-height:1.75em;}
+
+/* store
+-------------------------- */
+.store { padding-top:250px;}
+.store h3 { margin-bottom:1.5em; text-align:center; font-size:1.5em; color:#cca134;}
+.store p { margin-bottom:1.5em; text-align:center; font-size:1.25em; line-height:1.75em;}
+.store a,.store a:visited,.store a:active { color:#000; text-decoration:underline;}
+.store a:hover { color:#cca134;}
+.store table { margin-bottom:1.5em}
+.store td { padding:.75em; border-bottom:#c9f0f7 solid 3px;}
+@media, { .store td { filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#ffffffff, endColorstr=#ffffffff); } } /* IE6/7 only media, */
+@media all\0 { .store td { filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#e5ffffff, endColorstr=#e5ffffff); } } /* IE8 only \0 */
+@media all and (monochrome:0) { .store td { background:rgba(256,256,256,0.5)\9; } } /* IE9 only \9 */
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) { .store td { background:rgba(256,256,256,0.5); } 
+} /* IE10 only */
+@media screen and (-webkit-min-device-pixel-ratio:0) { .store td { background:rgba(256,256,256,0.5);}} /* chrome only */
+@-moz-document url-prefix() { .store td { background:rgba(256,256,256,0.5);}} /* firefox only */

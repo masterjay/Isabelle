@@ -1,0 +1,13 @@
+package lib.interfaces
+{
+	public interface ITiMarquee
+	{
+		function fnSetDealerName(strName:String):void
+		function fnSetMessage(strMsg:String):void
+		function fnSetMessageWithTimes(value:String, times:int):void
+		function fnSetMessageWithSeconds(value:String, seconds:Number = 60):void
+		function fnSetGameViewCasinoView(bGameView:Boolean = true):void
+		function fnClear():void
+		function fnDestory():void
+	}
+}

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx" implements="interfaces.ITiGroup" minWidth="1280" minHeight="720" width="1920" height="1080" creationComplete="application1_creationCompleteHandler(event)" applicationComplete="application1_applicationCompleteHandler(event)" xmlns:local="*" xmlns:ns="isabelle_fla.*">
+	<fx:Script>
+		<![CDATA[
+			import mx.core.FlexGlobals;
+			import mx.events.FlexEvent;
+			import mx.events.ResizeEvent;
+			
+			import spark.events.TextOperationEvent;
+			
+			import caurina.transitions.Tweener;
+			
+			import event.TiMoonCakeEvent;
+			
+			import handler.XmlDataHandler;
+			
+			import lib.AppSetting;
+			import lib.Customer;
+			
+			
+			protected function application1_creationCompleteHandler(event:FlexEvent):void
+			{
+				
+				//stage.scaleMode = StageScaleMode.NO_SCALE;
+				// TODO Auto-generated method stub
+				Security.allowDomain("*");
+				// TODO Auto-generated method stub
+			
+				
+			//	mcMsg.addEventListener(TiMoonCakeEvent.MESSAGE_CLOSE,fnClose);
+			//	
+			
+			//		var mc:MovieClip = new MovieClip();
+			//		mc.width = 1920;
+			//		mc.height = 1080
+			//	var po:Point = AppSetting.fnMovePositionByScreenResolution(mc);
+				//stageGp.x = po.x
+				//stageGp.y = po.y;
+				
+			//	var ob:Object = AppSetting.fnScalePercentByScreenResolution();
+			//	stageGp.scaleX = ob.scale_x;
+				//stageGp.scaleY = ob.scale_y;
+				//	return;
+					/*if(FlexGlobals.topLevelApplication.parameters.WY !="")
+					{
+						trace(AppSetting.m_WX)
+						var b:Boolean
+						
+						
+						
+						b = isNaN(AppSetting.m_WX);
+						if(!b)
+						{
+							var newX:Number = 1920 - AppSetting.m_WX
+							mxStartingMoon.x = - (newX/2)
+							AppSetting.m_moveX = newX/2	
+							
+							var newY:Number = 1080 - AppSetting.m_WY 
+							if(newY !=0)
+							{
+								mxStartingMoon.y = -newY
+								AppSetting.m_moveY = newY	
+							}
+						}
+						
+						
+						
+					}*/
+					
+			}
+			protected function application1_applicationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				//ExternalInterface.addCallback("fnSwfResize2",fnSwfResize2);
+				if(stage)
+				{
+					stage.displayState = StageDisplayState.NORMAL;
+					stage.scaleMode = StageScaleMode.NO_SCALE;
+					stage.align = StageAlign.TOP_LEFT;
+				//	stage.addEventListener (Event.RESIZE, resizeListener);
+				}
+			
+			}
+			public function fnSwfResize():void
+			{
+				mxStartingMoon.fnResize();
+			}
+			
+			public function fnAddNewCustomerToServer(c:Customer):void
+			{
+				mxStartingMoon.fnAddNewCustomerToServer(c);
+			}
+			
+			public function fnReady():void
+			{
+				mxStartingMoon.fnReady();
+			}
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+		
+		<local:StartingMoon id="mxStartingMoon" y="0"/>
+
+	
+		
+	
+	
+	
+	
+</s:Application>

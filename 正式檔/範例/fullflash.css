@@ -1,0 +1,71 @@
+/*------------------------------------------------
+|             Clair et Net. ? 2008                |
+--------------------------------------------------*/
+
+*{
+	margin:0;
+	padding:0;
+}
+
+html{
+	position:relative;
+	height:100%;
+}
+
+body{
+	position:relative;
+	height:100%;
+	background:#FFFFFF;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:12px;
+}
+img{border:0;}
+.clear{clear:both; height:0px; overflow:hidden; line-height:0; font-size:0.0em;}
+
+/*----------------------------------------------------------------------------------------------------*/
+/*---- alert plugin flash -------*/
+.alert{
+display:block;
+	font-family:Arial, Helvetica, sans-serif;
+	text-align:center;
+	width:100%;
+	background:#990000;
+	color:#FFF;
+	font-size:11px;	
+	margin:15px;
+
+}
+.alert span.alertInner{
+	display:block;
+	padding:5px 15px 5px 15px;
+	width:860px;
+	margin:auto;
+	height:35px;
+}
+.alert a{
+	color:#FFF;
+}
+
+.alert span.alertTxt{
+	float:left;
+	margin:10px 0 0 10px;
+}
+
+.btnFlash{
+	float:left;
+	display:inline;
+}
+/*----------------------------------------------------------------------------------------------------*/
+.altContent{
+	padding:20px;
+}
+#flashcontent{
+	position: absolute;
+	left: 0px;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	min-width: 990px;
+	min-height: 700px;
+	overflow:hidden;
+}

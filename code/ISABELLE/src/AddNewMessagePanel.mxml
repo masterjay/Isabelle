@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="400" height="300" xmlns:local="*" creationComplete="group1_creationCompleteHandler(event)">
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			
+			import spark.events.TextOperationEvent;
+			
+			import event.TiMoonCakeEvent;
+			
+			import fl.controls.RadioButton;
+			import fl.controls.TextInput;
+			import fl.managers.StyleManager;
+			
+			import lib.Customer;
+			import lib.TiDisableTextField;
+			
+			private var m_customer:Customer =new Customer();
+			private var m_nMaxCHars = 100;
+			private var m_nKeyTotal:int = 0;
+			protected function group1_creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+				fnInit();
+				fnFirstStep();
+				
+			}
+			
+			private function fnInit():void
+			{
+				TiDisableTextField.fnSetButtonAndDisableAllTextField(mcMessage.close_btn);
+				mcMessage.close_btn.addEventListener(MouseEvent.CLICK,fnClose);
+			}
+			
+			private function fnClose(e:Event):void
+			{
+				var ev:TiMoonCakeEvent = new TiMoonCakeEvent(TiMoonCakeEvent.CLOSE_NEW_MESSAGE);
+				dispatchEvent(ev);
+			}
+			
+			private function fnfocusInHandler(ev:Event):void
+			{
+				
+				IME.enabled = true
+			}
+					
+			private function fnFirstStep():void
+			{
+				var tf:TextFormat = new TextFormat(); 
+				tf.size = 14; 
+				//StyleManager.setComponentStyle(mcMessage.text_message, "textFormat", tf);
+				mcMessage.text_message.setStyle("textFormat", tf); 
+				
+				
+				//step 1
+				mcMessage.text_message.maxChars = m_nMaxCHars;
+				TiDisableTextField.fnSetButtonAndDisableAllTextField(mcMessage.btn_nextstep1);
+				mcMessage.text_message.addEventListener(FocusEvent.FOCUS_IN, fnfocusInHandler);
+				mcMessage.btn_nextstep1.addEventListener(MouseEvent.CLICK,fnGoStep2);
+				stage.addEventListener(KeyboardEvent.KEY_DOWN,onKey);
+				mcMessage.text_message.addEventListener(TextOperationEvent.CHANGING,fnMessageChangingEvent);
+			}
+			private function onKey(e:KeyboardEvent):void
+			{
+			//	trace(e.keyCode)
+				var nChars:int = mcMessage.text_message.maxChars;
+				trace("nChars :" + nChars);
+				if (e.keyCode==13) 
+				{
+					//m_nKeyTotal ++
+					m_nMaxCHars = nChars - 13
+					if(m_nMaxCHars <=0)
+					{
+						m_nMaxCHars = 1;
+					}
+				
+
+				}
+				else if(e.keyCode==8)
+				{
+					m_nMaxCHars = nChars + 13
+					//m_nKeyTotal++
+					if(m_nMaxCHars > 100)
+					{
+						m_nMaxCHars = 100
+					}
+				
+				}
+				else
+				{
+					m_nKeyTotal ++ 
+					//m_nMaxCHars = nChars - 1
+				}
+				
+				mcMessage.text_message.maxChars  = m_nMaxCHars
+				if(m_nKeyTotal >= m_nMaxCHars)
+				{
+					m_nKeyTotal = m_nMaxCHars
+				}
+				trace("m_nKeyTotal :" +m_nKeyTotal)
+				trace("m_nMaxCHars :" +m_nMaxCHars)
+				
+			
+			}
+			
+			private function fnMessageChangingEvent(e:TextOperationEvent):void
+			{
+			//	if(m_nKeyTotal > m_nMaxCHars)
+			//	{
+					e.preventDefault();
+			//	}
+			}
+			
+			private function fnGoStep2(e:Event):void
+			{
+				//varify
+				if(mcMessage.text_message.text == "")
+				{
+					return;
+				}
+				m_customer.m_message =  mcMessage.text_message.text;
+				stage.removeEventListener(KeyboardEvent.KEY_DOWN,onKey);
+				//------------------------
+				mcMessage.nextFrame();
+				//step 2
+				
+				var tf:TextFormat = new TextFormat(); 
+				tf.size = 14; 
+				mcMessage.surname.setStyle("textFormat", tf);
+				mcMessage.true_name.setStyle("textFormat", tf);
+				mcMessage.phone.setStyle("textFormat", tf);
+				mcMessage.mail.setStyle("textFormat", tf);
+				//mcMessage.address.setStyle("textFormat", tf);
+				
+				mcMessage.surname.addEventListener(FocusEvent.FOCUS_IN, fnfocusInHandler);
+				mcMessage.true_name.addEventListener(FocusEvent.FOCUS_IN, fnfocusInHandler);
+				mcMessage.phone.addEventListener(FocusEvent.FOCUS_IN, fnfocusInHandler);
+				mcMessage.mail.addEventListener(FocusEvent.FOCUS_IN, fnfocusInHandler);
+				//mcMessage.address.addEventListener(FocusEvent.FOCUS_IN, fnfocusInHandler);
+				
+				mcMessage.surname.maxChars=10;
+				mcMessage.true_name.maxChars=10
+				mcMessage.phone.maxChars=10
+				mcMessage.mail.maxChars = 100;
+				//mcMessage.address.maxChars =100; 
+				
+				mcMessage.phone.restrict="0-9"
+				
+				mcMessage.radio_yes.selected=true;
+				mcMessage.radio_yes.addEventListener(MouseEvent.CLICK,fnChangeRadioButton);
+				mcMessage.radio_no.addEventListener(MouseEvent.CLICK,fnChangeRadioButton);
+				mcMessage.radio_no5.selected = true;
+				mcMessage.radio_yes2.selected =true;
+				mcMessage.txt_errorinfo_mail.visible = false
+				mcMessage.txt_errorinfo_phone.visible = false
+				TiDisableTextField.fnSetButtonAndDisableAllTextField(mcMessage.btn_nextstep2);
+				mcMessage.btn_nextstep2.addEventListener(MouseEvent.CLICK,fnGoStep3);
+				
+				//------------------------
+			}
+			
+			private function fnChangeRadioButton(e:Event):void
+			{
+				if(e.currentTarget.name == "radio_yes")
+				{
+					mcMessage.radio_no5.enabled=true;
+					mcMessage.radio_no10.enabled=true;
+					mcMessage.radio_no15.enabled=true;
+					mcMessage.radio_no20.enabled=true;
+					mcMessage.radio_no20up.enabled=true;
+				}
+				else if(e.currentTarget.name == "radio_no")
+				{
+					mcMessage.radio_no5.enabled=false;
+					mcMessage.radio_no10.enabled=false;
+					mcMessage.radio_no15.enabled=false;
+					mcMessage.radio_no20.enabled=false;
+					mcMessage.radio_no20up.enabled=false;
+					
+				}
+			}
+			
+			private function fnGoStep3(e:Event):void
+			{
+				//varify
+				var bPass:Boolean = true;
+				if(mcMessage.phone.text.length !=10)
+				{
+					mcMessage.txt_errorinfo_phone.visible = true
+					bPass = false
+					//return;
+				}
+				else
+				{
+					mcMessage.txt_errorinfo_phone.visible = false
+				}
+				
+				if(fnVarifyEmailText() == false)
+				{
+					mcMessage.txt_errorinfo_mail.visible = true;
+					bPass = false
+					//return;
+				}
+				else
+				{
+					mcMessage.txt_errorinfo_mail.visible = false;
+				}
+				if(mcMessage.surname.text =="" || mcMessage.true_name.text =="" || mcMessage.phone.text=="" || mcMessage.mail.text =="" )
+				{
+					bPass = false
+					//return;
+				}
+				if(!mcMessage.check1.selected || !mcMessage.check2.selected)
+				{
+					bPass = false
+					//return;
+				}
+				if(bPass ==false)
+				{
+					return;
+				}
+				
+				//------------------------	
+				m_customer.m_surname = mcMessage.surname.text;
+				m_customer.m_name =  mcMessage.true_name.text
+				m_customer.m_phone = mcMessage.phone.text
+				m_customer.m_email = mcMessage.mail.text
+				//m_customer.m_address =mcMessage.address.text
+					
+				if(mcMessage.radio_no.selected)
+				{
+					m_customer.m_isrequirement = "否";
+				}
+				
+				if(mcMessage.radio_no.selected)
+				{
+					m_customer.m_requirementqty = "0";
+				}
+				else if(mcMessage.radio_no5.selected)
+				{
+					m_customer.m_requirementqty = "5"
+				}
+				else if(mcMessage.radio_no10.selected)
+				{
+					m_customer.m_requirementqty = "10"
+				}
+				else if(mcMessage.radio_no15.selected)
+				{
+					m_customer.m_requirementqty = "15"
+				}
+				else if(mcMessage.radio_no20.selected)
+				{
+					m_customer.m_requirementqty = "20"
+				}
+				else if(mcMessage.radio_no20up.selected)
+				{
+					m_customer.m_requirementqty = "20以上"
+				}
+				
+				if(mcMessage.radio_no2.selected)
+				{
+					m_customer.m_isneedcontact = "否";
+				}
+				
+				
+				//------------------------
+				mcMessage.nextFrame();
+				//------------------------
+				TiDisableTextField.fnSetButtonAndDisableAllTextField(mcMessage.btn_send);
+				mcMessage.btn_send.addEventListener(MouseEvent.CLICK,fnSendToFB);
+			}
+			
+			private function fnVarifyEmailText():Boolean
+			{
+				var regex:RegExp=new RegExp("^[\\w-]+(\\.[\\w-]+)*@[\\w-]+(\\.[\\w-]+)+$");
+				var boo:Boolean = regex.test(mcMessage.mail.text);
+				trace(boo)
+				return boo;
+				//设置restrict = "a-zA-Z\u4e00-\u9fa5"，这样是代表只能够输入大小写的英文字母和中文  
+			}
+			
+			private function fnSendToFB(e:Event):void
+			{
+				
+				if (ExternalInterface.available) 
+				{
+					ExternalInterface.call("fbs_click");
+				}
+				
+				
+				var ev2:TiMoonCakeEvent = new TiMoonCakeEvent(TiMoonCakeEvent.ADD_CUSTOMER_DATA);
+				ev2.m_customer = m_customer
+				dispatchEvent(ev2);
+				
+				var ev:TiMoonCakeEvent = new TiMoonCakeEvent(TiMoonCakeEvent.CLOSE_NEW_MESSAGE);
+				dispatchEvent(ev);
+				
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	<local:popup_moon_groups id="mcMessage"/>
+</s:Group>

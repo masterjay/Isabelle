@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<lib:Customer xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="400" height="300" creationComplete="group1_creationCompleteHandler(event)" xmlns:local="*" xmlns:lib="lib.*">
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			import mx.messaging.AbstractConsumer;
+			
+			import caurina.transitions.Tweener;
+			
+			import event.TiMoonCakeEvent;
+			
+			import lib.AppSetting;
+			
+			private var newMoveArea:moveArea 
+			private var myMoon:smallmoon
+			private var mcMoonCakeStage
+			private var m_tCheck:Timer=new Timer(100);
+			protected function group1_creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+			//	mcMoonCakeStage = new moonCakeStage();
+			//	mcMoonCakeStage.x=275.5
+			//	mcMoonCakeStage.y=572.35
+			//	moonCakeStageGp.addElement(mcMoonCakeStage);
+				m_tCheck.addEventListener(TimerEvent.TIMER,fnCheckResize);
+				fnCreateMoon();
+				
+			}
+			private function fnCreateMoon():void
+			{
+				myMoon = new smallmoon();
+				moonGp.addElement(myMoon);
+				if(this.m_mySelf)
+				{
+					myMoon.fnMyself();
+				}
+				else
+				{
+					this.alpha = 0.2 ;
+				}
+					
+				myMoon.addEventListener(MouseEvent.MOUSE_OVER,moon_mouseOverHandler);
+				myMoon.addEventListener(TiMoonCakeEvent.MOONCAKE_CLICK,fnMoonCakeClickHandler);
+			//	var po:Point = fnRanMoonPositon();
+				if(m_po)
+				{
+					myMoon.orgiralX =m_po.x
+					myMoon.orgiralY = m_po.y
+					myMoon.x = myMoon.orgiralX
+					myMoon.y = myMoon.orgiralY
+				//	moonCakeStageGp.removeAllElements()
+				//	mcMoonCakeStage = null
+				}
+			
+				
+			}
+			
+			private function fnCheckResize(e:TimerEvent):void
+			{
+				if(AppSetting.m_currentEnlargeMoonId != m_customerId)
+				{
+					fnRollOutHandler();
+					m_tCheck.stop();
+				}
+			}
+			
+			
+			protected function moon_mouseOverHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				AppSetting.m_currentEnlargeMoonId = m_customerId;
+				
+				m_tCheck.start();
+				this.alpha = 1 ;
+				var newX:Number = this.mouseX
+				var newY:Number = this.mouseY
+				newMoveArea = new moveArea();
+				this.moveAreaGp.addElement(newMoveArea);
+				moveAreaGp.x = newX
+				moveAreaGp.y = newY
+				myMoon.fnScaleOriginal(m_name);
+				myMoon.removeEventListener(MouseEvent.MOUSE_OVER,moon_mouseOverHandler);
+				buttonMode = true;
+				newMoveArea.addEventListener(MouseEvent.MOUSE_OUT,fnRollOutHandler);
+				Tweener.addTween(myMoon, {x:newX, y:newY,scaleX:1,scaleY:1,time:1 ,onComplete:handleSwapEnd});
+				trace("over")
+				//handleSwapEnd();
+			}
+			
+			private function handleSwapEnd():void
+			{
+				//myMoon.addEventListener(MouseEvent.MOUSE_MOVE,fnMouseMoveHandler);
+				newMoveArea.addEventListener(MouseEvent.MOUSE_OVER,fnMouseOverHanlder)
+				//newMoveArea.addEventListener(MouseEvent.MOUSE_OUT,fnRollOutHandler);
+				newMoveArea.addEventListener(MouseEvent.MOUSE_MOVE,fnMouseMoveHandler);
+				
+				//	myMoon.removeEventListener(MouseEvent.MOUSE_OVER,moon_mouseOverHandler);
+			}
+			private function fnMouseOverHanlder(e:Event):void
+			{
+				buttonMode = true;
+			}
+			
+			private function fnMouseMoveHandler(e:MouseEvent):void
+			{
+				var newX:Number = this.mouseX
+				var newY:Number = this.mouseY
+				//myMoon.x = newX
+				//myMoon.y = newY
+				//Tweener.removeAllTweens();
+				trace("move")
+				//Tweener.addTween(myMoon, {x:newX, y:newY,scaleX:1,scaleY:1,time:1,onComplete:handleSwapEnd});
+			}
+			
+			private function fnRollOutHandler(e:MouseEvent =null):void
+			{
+				var newX:Number = myMoon.orgiralX
+				var newY:Number = myMoon.orgiralY
+				buttonMode = false;
+				myMoon.fnScaleNarrow();
+				trace("out")
+				//myMoon.x = newX
+				//myMoon.y = newY
+				Tweener.addTween(myMoon, {x:newX, y:newY,scaleX:1,scaleY:1,time:0.1,onComplete:handleSwapEnd2});
+				newMoveArea.removeEventListener(MouseEvent.MOUSE_MOVE,fnMouseMoveHandler);
+				newMoveArea.removeEventListener(MouseEvent.MOUSE_OUT,fnRollOutHandler);
+				moveAreaGp.removeAllElements();
+				if(!m_mySelf)
+				{
+					this.alpha = 0.2;	
+				}
+				var ev:TiMoonCakeEvent =new TiMoonCakeEvent(TiMoonCakeEvent.SWAP_DEPTH,"",true)
+					ev.m_customer = this;
+						dispatchEvent(ev);		
+			}
+			
+			private function handleSwapEnd2():void
+			{
+				
+				myMoon.addEventListener(MouseEvent.MOUSE_OVER,moon_mouseOverHandler);
+			}
+			
+			
+			private function fnMoonCakeClickHandler(event:MouseEvent):void
+			{
+				var ev:TiMoonCakeEvent = new TiMoonCakeEvent(TiMoonCakeEvent.MOONCAKE_CLICK);
+				ev.m_customer.m_name = this.m_name;
+				ev.m_customer.m_message = this.m_message;
+				dispatchEvent(ev);
+			}
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<s:Group id="moonCakeStageGp"/>
+	<s:Group id="moonGp"/>
+	<s:Group id="moveAreaGp" alpha="0" click="fnMoonCakeClickHandler(event)" />
+</lib:Customer>

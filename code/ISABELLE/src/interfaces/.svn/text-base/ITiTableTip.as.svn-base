@@ -1,0 +1,9 @@
+package lib.interfaces
+{
+	public interface ITiTableTip
+	{
+		function fnShow(msg:String):void
+		function fnHide():void
+		function fnDestory():void
+	}
+}

@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx" width="100%" height="100%" minWidth="990" minHeight="700" xmlns:local="*" creationComplete="application1_creationCompleteHandler(event)"
+			   initialize="initializeApplication()" xmlns:elements="org.osmf.elements.*">
+	<fx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import mx.controls.SWFLoader;
+			import mx.core.FlexGlobals;
+			import mx.events.FlexEvent;
+			
+			import caurina.transitions.Tweener;
+			
+			import event.TiMoonCakeEvent;
+			
+			import interfaces.ITiGroup;
+			
+			import lib.AppSetting;
+
+			
+			
+		//	protected var m_pLobbyLoader:SWFLoader = new SWFLoader();
+			private var m_WX:Number = 0
+			private var m_WY:Number = 0
+			private var m_newMessagePanel:AddNewMessagePanel
+			private var m_bReady:Boolean = false;
+			private function initializeApplication():void
+			{
+				Security.allowDomain("*");
+				
+				FlexGlobals.topLevelApplication.parameters.WX=FlexGlobals.topLevelApplication.parameters["WX"];
+				FlexGlobals.topLevelApplication.parameters.WY=FlexGlobals.topLevelApplication.parameters["WY"];
+				if(FlexGlobals.topLevelApplication.parameters.WX && FlexGlobals.topLevelApplication.parameters.WY)
+				{
+					m_WX = FlexGlobals.topLevelApplication.parameters.WX;
+					m_WY = FlexGlobals.topLevelApplication.parameters.WY;
+				}
+				
+				
+				FlexGlobals.topLevelApplication.parameters.host=FlexGlobals.topLevelApplication.parameters["host"];
+				if(FlexGlobals.topLevelApplication.parameters.host)
+				{
+					AppSetting.m_RootDomain = FlexGlobals.topLevelApplication.parameters.host
+				}
+				//AppSetting.m_WX = WX
+			//	AppSetting.m_WY = WY
+				
+				
+				
+			}
+			
+			
+			protected function application1_creationCompleteHandler(event:FlexEvent):void
+			{
+				ExternalInterface.addCallback("fnSwfResize",fnSwfResize);
+				logo.gotoAndStop(1);
+				var stageWidth:int = flash.system.Capabilities.screenResolutionX
+				var stageHeight:int = flash.system.Capabilities.screenResolutionY	
+				AppSetting.m_stageWidth = stageWidth;
+				AppSetting.m_stageHeight = stageHeight;
+				//var ob:Object = AppSetting.fnScalePercentByScreenResolution();
+				//loading.scaleX = ob.scale_x;
+				//loading.scaleY = ob.scale_y;
+			    var b:Boolean =  isNaN(m_WX);
+				if(!b)
+				{
+					fnMoveSwfPosition();
+				}	
+				//var po:Point = AppSetting.fnMovePositionByScreenResolution(loading);
+				//loading.x = po.x
+				//loading.y = po.y
+				//trace("loading.x :" + loading.x)	
+				//trace("loading.y :" + loading.y )
+				m_pLobbyLoader.addEventListener(Event.COMPLETE, fnLoadComplete);
+				m_pLobbyLoader.addEventListener(ProgressEvent.PROGRESS, fnOnProgress);
+				m_pLobbyLoader.load("Lobby.swf");
+				
+				this.addEventListener(TiMoonCakeEvent.READY,fnReady);
+				
+			}
+			
+			
+			
+			private function fnOnProgress(e:Event):void
+			{
+				trace("loading");
+			}
+			
+			private function fnLoadComplete(e:Event):void
+			{
+				trace("sucess");
+				//this.addElement(m_pLobbyLoader);
+				fnMoveSwfPosition();
+				
+				
+				m_pLobbyLoader.addEventListener(TiMoonCakeEvent.POPUP_MSESSAGE,fnPopUpMessageHandler);
+				m_pLobbyLoader.addEventListener(TiMoonCakeEvent.CLOSE_POPUP_MSESSAGE,fnCLosePopUpMessageHandler);
+				mxMsgPanel.addEventListener(TiMoonCakeEvent.CLOSE_POPUP_MSESSAGE,fnClosePopupMessage);
+				m_pLobbyLoader.addEventListener(TiMoonCakeEvent.MOONCAKE_CLICK,fnMoonClickHandler);
+			}
+			
+			private function fnClosePopupMessage(e:TiMoonCakeEvent):void
+			{
+				mcMask.visible =false;
+				mxMsgPanel.visible = false;
+				mxMsgPanel.alpha=0;
+			}
+			
+			private function fnPopUpMessageHandler(e:TiMoonCakeEvent):void
+			{
+				m_newMessagePanel = new AddNewMessagePanel();
+				
+				m_newMessagePanel.addEventListener(TiMoonCakeEvent.CLOSE_NEW_MESSAGE,fnCLoseNewMessagePanelHandler);
+				m_newMessagePanel.addEventListener(TiMoonCakeEvent.ADD_CUSTOMER_DATA,fnAddNewCustomerToServer)
+				messageGp.addElement(m_newMessagePanel);
+				mcMask.visible = true;
+			}
+			
+			private function fnCLoseNewMessagePanelHandler(e:TiMoonCakeEvent):void
+			{
+				
+				messageGp.removeAllElements();
+				mcMask.visible =false;	
+			
+			}
+			
+			public function fnAddNewCustomerToServer(e:TiMoonCakeEvent):void
+			{
+				var Obj:Object=m_pLobbyLoader.content;
+				if(Obj)
+				{
+					var lobby:interfaces.ITiGroup=Obj.application as ITiGroup;
+					if(lobby)
+					{
+						lobby.fnAddNewCustomerToServer(e.m_customer);
+						
+					}
+				}
+			}
+			
+			private function fnCLosePopUpMessageHandler(e:TiMoonCakeEvent):void
+			{
+				mcMask.visible =false;
+			}
+			
+			private function fnMoonClickHandler(e:TiMoonCakeEvent):void
+			{
+				
+				
+				var po:Point = AppSetting.fnMovePositionByScreenResolution(mxMsgPanel.mcMsg);
+				
+				mxMsgPanel.y = mxMsgPanel.height - mxMsgPanel.mcMsg.height
+				mxMsgPanel.visible = true;
+			//	mcMask.width = 2000
+				//mcMask.height = 1500
+				
+				mcMask.visible = true;
+				//var newX:Number = 960 - mxMsgPanel.mcMsg.width/2
+				var newY:Number = mxMsgPanel.height - mxMsgPanel.mcMsg.height/2
+				mxMsgPanel.fnSetMsg(e.m_customer);
+				
+				Tweener.addTween(mxMsgPanel, {y:newY,alpha:1,time:1,onComplete:handleSwapEnd});
+			}
+			private function handleSwapEnd():void
+			{
+			}
+			
+			
+			private function fnSwfResize(clientWidth:Number,clientHeight:Number):void
+			{
+				//FlexGlobals.topLevelApplication.parameters.WX = newW
+				//FlexGlobals.topLevelApplication.parameters.WY = newH
+				//AppSetting.m_WX = newW
+			//	AppSetting.m_WY = newH
+				m_WX = clientWidth
+				m_WY = clientHeight;
+				fnMoveSwfPosition();
+				
+			}
+			
+			private function fnMoveSwfPosition():void
+			{
+				// 940 800 is the smallest 
+			//	m_WX = 940
+			//	m_WY = 800
+				
+				if(m_WX==0 && m_WY==0)
+				{
+					return;
+				}
+				var newX:Number = 1920 - m_WX
+				var newY:Number = 1080 - m_WY
+				if(newX > 980)
+				{
+					newX = 980
+				}
+				if(newY > 280)
+				{
+					newY = 280
+				}
+				AppSetting.m_moveX = - (newX/2)
+				AppSetting.m_moveY = -newY		
+				if(m_bReady)
+				{
+					m_pLobbyLoader.x = AppSetting.m_moveX 
+					m_pLobbyLoader.y = AppSetting.m_moveY 
+				}
+			
+				if(!m_bReady)
+				{
+					if(loading.visible)
+					{
+						loading.x = AppSetting.m_moveX
+						loading.y = - (newY/4)
+					}
+				}	
+				
+				logo.x = AppSetting.m_moveX 
+				msgGp.x = AppSetting.m_moveX 
+				msgGp.y = - (newY/4)
+				messageGp.x = AppSetting.m_moveX 
+				
+				if(m_pLobbyLoader && m_bReady)
+				{
+					var Obj:Object=m_pLobbyLoader.content;
+					if(Obj)
+					{
+						var lobby:interfaces.ITiGroup=Obj.application as ITiGroup;
+						if(lobby)
+						{
+							lobby.fnSwfResize();
+							
+						}
+					}
+					
+				}
+				
+				
+			}
+			
+			private function fnReady(e:TiMoonCakeEvent):void
+			{
+				m_bReady = true;
+				loading.visible = false
+				logo.gotoAndPlay(1);				
+				logo.mouseEnabled =false;
+				fnMoveSwfPosition();
+				
+				var Obj:Object=m_pLobbyLoader.content;
+				if(Obj)
+				{
+					var lobby:interfaces.ITiGroup=Obj.application as ITiGroup;
+					if(lobby)
+					{
+						lobby.fnReady();
+						
+					}
+				}
+			}
+		]]>
+	</fx:Script>
+	
+	<s:SWFLoader id="m_pLobbyLoader" />
+	
+	<local:slagon_mc id="logo" mouseChildren="false" mouseEnabled="false" />
+	<local:mask_message id="mcMask" visible="false" width="1920" height="1080" y="0"/>
+	<s:Group id="msgGp">
+		<local:BlessMessage id="mxMsgPanel" visible="false"/>
+	</s:Group>
+	<s:Group id="messageGp"/>
+	<local:loading_mc id="loading" visible="true"/>
+	
+</s:Application>

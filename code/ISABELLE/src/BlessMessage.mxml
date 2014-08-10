@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="400" height="300" creationComplete="group1_creationCompleteHandler(event)" xmlns:local="*"
+		 >
+	<fx:Script>
+		<![CDATA[
+			import mx.events.EffectEvent;
+			import mx.events.FlexEvent;
+			
+			import spark.effects.AnimateTransform;
+			import spark.effects.animation.Animation;
+			import spark.effects.animation.MotionPath;
+			import spark.effects.animation.SimpleMotionPath;
+			import spark.effects.easing.Power;
+			import spark.effects.easing.Sine;
+			
+			import event.TiMoonCakeEvent;
+			
+			import lib.Customer;
+			import lib.TiDisableTextField;
+			protected var m_AnimateShow:AnimateTransform = null;
+			private var m_nDuration:Number = 1000;
+			protected function group1_creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				TiDisableTextField.fnSetButtonAndDisableAllTextField(mcMsg.btn_close);
+				mcMsg.btn_close.addEventListener(MouseEvent.CLICK,fnClose);
+				
+				//fnCheckAnimate();
+			/*	fnAddShowAction("x",-mcMsg.width,mcMsg.x);
+				fnAddShowAction("y",0,mcMsg.y);*/
+			}
+			
+			private function fnClose(e:MouseEvent):void
+			{
+				var ev:TiMoonCakeEvent = new TiMoonCakeEvent(TiMoonCakeEvent.CLOSE_POPUP_MSESSAGE);
+				dispatchEvent(ev);
+			}
+			
+			public function fnSetMsg(customer:Customer):void
+			{
+				mcMsg.txt_message.text = customer.m_message;
+				
+			}
+			
+			
+			
+			
+			private function fnCheckAnimate():void
+			{
+				if(m_AnimateShow == null)
+				{
+					m_AnimateShow = new AnimateTransform();
+					m_AnimateShow.autoCenterTransform = true;
+					m_AnimateShow.motionPaths = new Vector.<MotionPath>;
+					m_AnimateShow.target = this;
+					m_AnimateShow.duration = m_nDuration;
+					var p:Power = new Power();
+					m_AnimateShow.easer = p;
+					m_AnimateShow.addEventListener(EffectEvent.EFFECT_END,fnShowEnd);
+				}
+				
+			}
+			
+			private function fnShowEnd(event:EffectEvent):void
+			{
+				
+			}
+			
+			private function fnAddShowAction(strProperty:String,nFrom:Number,nTo:Number):void
+			{
+				//fnCheckAnimate();
+				var smp:SimpleMotionPath = new SimpleMotionPath(strProperty,nFrom,nTo);
+				m_AnimateShow.motionPaths.push(smp);				
+			//	m_HashProperty.put(strProperty,nTo);	
+			}
+			
+			public function fnShow():void
+			{
+				m_AnimateShow.play();
+			}
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	<local:popup_message_groups id="mcMsg" />	
+</s:Group>

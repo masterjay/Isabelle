@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx"   xmlns:local="*" creationComplete="group1_creationCompleteHandler(event)">
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			
+			import event.TiMoonCakeEvent;
+			public var orgiralX:Number 
+			public var orgiralY:Number
+			protected function group1_creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				myMoon.dectectArea.alpha = 0;
+				fnScaleNarrow();
+			}
+			
+			
+			
+			
+			protected function myMoon_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				var ev:TiMoonCakeEvent = new TiMoonCakeEvent(TiMoonCakeEvent.MOONCAKE_CLICK)
+			//		dispatchEvent(ev)
+			}
+			
+			public function fnScaleOriginal(name:String):void
+			{
+				// TODO Auto-generated method stub
+				myMoon.scaleX = 1
+				myMoon.scaleY = 1	
+				trace("scale 1")
+				mcName.txt_name.text = name
+				mcName.visible = true;
+			}
+			
+			public function fnScaleNarrow():void
+			{
+				myMoon.scaleX = 0.5
+				myMoon.scaleY = 0.5
+				mcName.visible=false;
+			}
+			
+			public function fnMyself():void
+			{
+				myMoon.gotoAndStop(2);
+			}
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<local:moon_cake id="myMoon" click="myMoon_clickHandler(event)" />
+	<local:moonCake_surname id="mcName" x="-70" y="-60" visible="false"/>
+</s:Group>

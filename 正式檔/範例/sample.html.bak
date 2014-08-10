@@ -1,0 +1,199 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://www.facebook.com/2008/fbml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>La serre a voeux </title>
+<link rel="stylesheet" type="text/css" media="all" href="_css/fullflash.css" />
+	<!--[if lt IE 7]>
+    	<style type="text/css">
+    	#flashcontent{
+    	width:expression(document.body.clientWidth < 990? "990px": "100%" );
+    	height:expression(document.body.clientHeight < 300? "300px": "100%" );
+    	}
+    	</style>
+    <![endif]-->
+
+<link rel="image_src" href="http://www.clairetnet.com/serre-a-voeux/_img/facebookshare.jpg" />
+<meta name="description" content="Faites pousser vos messages et partagez les avec vos amis" />
+<script type="text/javascript" src="_js/swfobject.js"></script>
+<script type="text/javascript" src="_js/screen.js"></script>
+<script type="text/javascript" src="_js/lib.js"></script>
+<script type="text/javascript" >
+//Local Variable with Flash Content id. default = flashcontent
+var as_swf_name = "flashcontent";
+var api;
+
+//Initialize Facebook
+function fbInit(pAsSwfName,pApi_key,pReceiver){
+	as_swf_name = pAsSwfName;
+	FB.init(pApi_key,pReceiver);
+}
+//JavaScript Connect methods
+function login(){
+	//FB.Connect.requireSession( onLoginHandler );
+	FB.Connect.showPermissionDialog('publish_stream', onLoginHandler );
+	 FB.JSON.parse=function(text,reviver){
+                    var j;
+                    function walk(a,c)
+                    {
+                        var b,d,e=a[c];
+                        if(e&&typeof e==='object')
+                            for(b in e)
+                                if(Object.hasOwnProperty.call(e,b))
+                                {
+                                    d=walk(e,b);
+                                    if(d!==undefined){
+                                        e[b]=d;
+                                    }else delete e[b];
+                                }
+                            return reviver.call(a,c,e);
+                    }
+                    var cx=/[\u0000\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g;
+                    cx.lastIndex=0;
+                    if(cx.test(text)){
+                        text=text.replace(cx,function(a){ return '\\u'+('0000'+a.charCodeAt(0).toString(16)).slice(-4); });
+                    }
+
+                    var replacedText = text.replace(/\\\'/g, '\'');
+                    replacedText = replacedText.replace(/\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g,'@').replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g,']').replace(/(?:^|:|,)(?:\s*\[)+/g,'');
+                    if(/^[\],:{}\s]*$/.test(replacedText))
+                    {
+                        j=eval('('+text+')');
+                        return typeof reviver==='function'?walk({'':j},''):j;
+                    }
+                    throw new SyntaxError('JSON.parse');
+                };       
+}
+
+//Event Handlers
+function onLoginHandler(){
+	flashCallBack( "onLogIn" );
+}
+
+
+function getFriends(){
+   // alert("step1");
+    var api;
+    var friendInfos;
+
+    api = FB.Facebook.apiClient;
+   // api.friends_get(null, function(result, ex) {onAskFriends(result)})
+	var  myQuery='SELECT name, uid FROM user  WHERE uid IN ( SELECT uid2 FROM friend WHERE uid1='+api.get_session().uid+')';
+	api.fql_query(myQuery, function(users){
+	onAskFriends(users)
+   });
+	
+	
+}
+
+
+
+
+   
+   
+
+
+function onAskFriends(result){
+	//alert(result);
+	flashCallBack( "onGetFriends",result );
+	//alert(result[0]);
+
+
+}
+
+
+function streamPub_fr(_idCard,_idUsr,_uid,_nom){	
+		var attachment = {'name':'La Serre a Voeux','href':'http://www.clairetnet.com/serre-a-voeux/index.php?lang=fr&carte_id='+_idCard+'&usr_id='+_idUsr+'&ref=fb&fb_id='+_uid,'description':_nom+' a cree une Serre a Voeux et vous a envoye un message.','media':[{'type':'image','src':'http://www.clairetnet.com/serre-a-voeux/_img/facebookshare.jpg','href':'http://www.clairetnet.com/serre-a-voeux/index.php?lang=fr&carte_id='+_idCard+'&usr_id='+_idUsr+'&ref=fb'}]};
+	    FB.Connect.streamPublish('', attachment, null,_uid, "Post this:", null,true);
+ 	}
+function streamPub_en(_idCard,_idUsr,_uid,_nom){	
+		var attachment = {'name':'The Wishes Greenhouse','href':'http://www.clairetnet.com/serre-a-voeux/index.php?lang=en&carte_id='+_idCard+'&usr_id='+_idUsr+'&ref=fb&fb_id='+_uid,'description':_nom+' a cree une Serre a Voeux et vous a envoye un message.','media':[{'type':'image','src':'http://www.clairetnet.com/serre-a-voeux/_img/facebookshare.jpg','href':'http://www.clairetnet.com/serre-a-voeux/index.php?lang=en&carte_id='+_idCard+'&usr_id='+_idUsr+'&ref=fb'}]};
+	    FB.Connect.streamPublish('', attachment, null,_uid, "Post this:", null,true);
+ 	}
+function streamPub_onmywall_fr(_card_id){	
+		var attachment = {'name':'La Serre a Voeux','href':'http://www.clairetnet.com/serre-a-voeux/index.php?lang=fr&carte_id='+_card_id,'description':'J\'ai cree une Serre a Voeux pour mes contacts. Venez faire la votre !','media':[{'type':'image','src':'http://www.clairetnet.com/serre-a-voeux/_img/facebookshare.jpg','href':'http://www.clairetnet.com/serre-a-voeux/index.php?lang=fr&carte_id='+_card_id}]};
+	    FB.Connect.streamPublish('', attachment, null,null, "", null,true);
+ 	}
+function streamPub_onmywall_en(_card_id){	
+		var attachment = {'name':'The Wishes Greenhouse','href':'http://www.clairetnet.com/serre-a-voeux/index.php?lang=en&carte_id='+_card_id,'description':'I just created a Wishes Greenhouse for some contacts. Come an make your own !','media':[{'type':'image','src':'http://www.clairetnet.com/serre-a-voeux/_img/facebookshare.jpg','href':'http://www.clairetnet.com/serre-a-voeux/index.php?lang=en&carte_id='+_card_id}]};
+	    FB.Connect.streamPublish('', attachment, null,null, "", null,true);
+ 	}
+ 
+//Method to dispatch an Event to Flash
+function flashCallBack ( func ) {
+	if( arguments.length > 1 ){
+		document[as_swf_name][func]( Array.prototype.slice.call(arguments).slice(1)[0]);
+	}else{
+		document[as_swf_name][func]();
+	}
+}
+</script> 
+</head>
+    <body>
+        <script src="http://static.ak.connect.facebook.com/js/api_lib/v0.4/FeatureLoader.js.php" type="text/javascript"></script>
+        
+        
+        <div id="flashcontent">
+        <div id="flashInner">
+
+        <table width="520" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td><img src="_img/head.jpg" alt="La serre a voeux" width="520" height="328" /></td>
+                    <tr> <td><p align="center"><strong>Pour profiter de l'experience interactive</strong></p>
+                        <p align="center"><br />
+                        Vous devez <strong>activer le javascript</strong> <br />
+                        et aussi disposer du plugin <strong><a href="http://www.adobe.com/go/getflashplayer" title="Cliquez ici pour tlcharger Flash Player">adobe flash player</a></strong></p>
+                        <p align="center">&nbsp;</p>
+                        <p align="center">&nbsp;</p></td>   </tr>
+       
+          </tr>
+        </table>
+        <h1>&nbsp;</h1>
+        <p>&nbsp;</p>
+          <script type="text/javascript">
+<!--
+hsh = new Date();
+hsd = document;
+hsi = '<img width="1" height="1" src="http://logp.xiti.com/hit.xiti?s=54756'
+hsi += '&p=serreavoeux&hl=' + hsh.getHours() + 'x' + hsh.getMinutes() + 'x' + hsh.getSeconds();
+if(parseFloat(navigator.appVersion)>=4)
+{Xiti_s=screen;hsi += '&r=' + Xiti_s.width + 'x' + Xiti_s.height + 'x' + Xiti_s.pixelDepth + 'x' + Xiti_s.colorDepth;}
+hsd.writeln(hsi + '&ref=' + hsd.referrer.replace('&', '$') + '" >');
+//-->
+</script>
+		</div></div>
+        <script type="text/javascript">
+                
+            function redirect(){
+                 document.location.href="http://www.clair-et-net.com" 
+            }
+            
+            var flashvars = {};
+            flashvars.as_swf_name = "flashInner";
+						flashvars.lang = "en";
+            
+            var params = {};
+            params.swLiveConnect 		= "true";
+            params.allowScriptAccess 	= "always";
+            params.allowFullScreen		= "false";
+            params.wmode = "opaque";
+            
+            var attributes = {};
+    
+            swfobject.embedSWF("_swf/Main.swf", "flashInner", "100%", "100%", "9.0.0.0", "_swf/expressInstall.swf",flashvars,params,attributes);	
+            
+            fbInit("flashInner", "52ac033f35951c9ba737c10a947ff131", "xd_receiver.htm");
+        </script>
+      
+<noscript><img width="1" height="1" src="http://logp.xiti.com/hit.xiti?s=54756&p=serreavoeux&" ></noscript>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-4070786-18");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+    </body>
+</html>

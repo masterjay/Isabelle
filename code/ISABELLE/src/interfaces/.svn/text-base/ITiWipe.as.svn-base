@@ -1,0 +1,13 @@
+package lib.interfaces
+{
+	import mx.core.IVisualElement;
+	import mx.events.EffectEvent;
+
+	public interface ITiWipe
+	{
+		function fnShowFirst():void
+		function fnShowSecond():void
+		function fnAddToFirst(element:IVisualElement):void	
+		function fnAddToSecond(element:IVisualElement):void
+	}
+}

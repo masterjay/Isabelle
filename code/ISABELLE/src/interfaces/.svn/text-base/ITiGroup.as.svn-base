@@ -1,0 +1,7 @@
+package lib.interfaces
+{
+	public interface ITiGroup
+	{
+		function fnDestory():void
+	}
+}
