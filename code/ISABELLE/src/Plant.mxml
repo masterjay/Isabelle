@@ -58,10 +58,10 @@
 				
 			}
 			
-			public function fnSetTotalText():void
+			public function fnSetTotalText(nCount:int):void
 			{
 				//mcTotal.txt_total.text = AppSetting.m_customerHashMap.size().toString();
-				m_txt.text=AppSetting.m_customerHashMap.size().toString();
+				m_txt.text=nCount.toString();
 			}
 			
 			

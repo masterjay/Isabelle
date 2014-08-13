@@ -19,14 +19,20 @@
 			import lib.TiDisableTextField;
 			
 			private var m_xmlDataHandler:XmlDataHandler = new XmlDataHandler();
-			//private var m_bReady:Boolean = false
+			private var m_bReady:Boolean = false
 			private var m_myCustomer:Customer
 			private var m_tChangeScreen:Timer = new Timer(10000)
-			
+			private var m_nCount:int = 0;
+			private var m_bCreateCacheAsBitMapBG:Boolean = true;
+			private var m_myMessageObject:Customer =null
 			public function fnReady():void
 			{
-				startmc.addEventListener(Event.ENTER_FRAME,fnStageReady);
-				startmc.gotoAndPlay(2);
+				if(!m_bReady)
+				{
+					startmc.addEventListener(Event.ENTER_FRAME,fnStageReady);
+					startmc.gotoAndPlay(2);
+				}
+				
 			}
 				
 			protected function group1_creationCompleteHandler(event:FlexEvent):void
@@ -39,7 +45,7 @@
 				
 				//mcMask.width = AppSetting.m_stageWidth;
 				//mcMask.height=AppSetting.m_stageHeight;
-				this.addEventListener(TiMoonCakeEvent.SWAP_DEPTH,fnSwapMoonDepth);
+			//	this.addEventListener(TiMoonCakeEvent.SWAP_DEPTH,fnSwapMoonDepth);
 			}
 			
 			private function fnStageReady(e:Event):void
@@ -48,7 +54,7 @@
 				if(mc.currentFrame == mc.totalFrames)
 				{
 					mc.removeEventListener(Event.ENTER_FRAME,fnStageReady);
-					//m_bReady = true;
+					m_bReady = true;
 					fnReadyInit();
 					//fnGetXmlData();
 				}
@@ -69,6 +75,7 @@
 				m_tChangeScreen.start();
 				
 				allMoonCakeGp.visible = true;
+				bgMoonCakeGp.visible =true;
 			}
 			
 			private function fnChangeScreen(e:TimerEvent):void
@@ -103,6 +110,9 @@
 			{
 				m_xmlDataHandler.fnRequestMessageListXmlData();
 				m_xmlDataHandler.addEventListener(TiMoonCakeEvent.GET_XML_CUSTOMER_DATA,fnGetCustomerDataHandelr);
+				m_xmlDataHandler.addEventListener(TiMoonCakeEvent.GET_XML_CUSTOMER_COUNT_DATA,fnGetCountHandler);
+				m_xmlDataHandler.fnRequestCountXmlData();
+				
 			}
 			private function fnGetCustomerDataHandelr(e:TiMoonCakeEvent =null):void
 			{	trace("fnGetCustomerDataHandelr")
@@ -121,44 +131,95 @@
 			{
 				m_myCustomer = null
 				var moonCake:Customer
-				for each (var key:String in AppSetting.m_customerNewHashMap.keys())
+				if(m_bCreateCacheAsBitMapBG)
 				{
-					var c:Customer =  AppSetting.m_customerNewHashMap.get(key);
-					if(c.m_customerId == AppSetting.m_myMessageId)
+					for each (var key:String in AppSetting.m_customerNewHashMap.keys())
 					{
+						var c:Customer =  AppSetting.m_customerNewHashMap.get(key);
+						/*if(c.m_customerId == AppSetting.m_myMessageId)
+						{
 						c.m_mySelf = true;
+						}*/
+						var po:Point = fnRanMoonPositon();
+						//	AppSetting.m_moveX = -100
+						//	AppSetting.m_moveY = -100
+						//	trace("AppSetting.m_moveX "+AppSetting.m_moveX )
+						
+						//po.x = po.x - AppSetting.m_moveX /2 
+						//po.y = po.y - AppSetting.m_moveY /2
+						//trace("po.x: "+po.x + "po.y :" + po.y)
+						moonCake = new MoonCakeAni();
+						//moonCake.cacheAsBitmap = true;
+						moonCake.m_customerId = c.m_customerId;
+						moonCake.m_po = po;
+						moonCake.m_mySelf = c.m_mySelf;
+						moonCake.m_name = c.m_name
+						moonCake.m_phone = c.m_phone;
+						moonCake.m_email = c.m_email;
+						moonCake.m_message = c.m_message
+						moonCake.addEventListener(TiMoonCakeEvent.MOONCAKE_CLICK,fnMoonClickHandler);
+						//	moonCake.addEventListener(MouseEvent.MOUSE_OVER,fnSwapMoonDepth);
+						allMoonCakeGp.addElement(moonCake);
+						
+						
 					}
-					var po:Point = fnRanMoonPositon();
-				//	AppSetting.m_moveX = -100
-				//	AppSetting.m_moveY = -100
-				//	trace("AppSetting.m_moveX "+AppSetting.m_moveX )
-					
-					//po.x = po.x - AppSetting.m_moveX /2 
-					//po.y = po.y - AppSetting.m_moveY /2
-					//trace("po.x: "+po.x + "po.y :" + po.y)
-					moonCake = new MoonCakeAni();
-					moonCake.m_customerId = c.m_customerId;
-					moonCake.m_po = po;
-					moonCake.m_mySelf = c.m_mySelf;
-					moonCake.m_name = c.m_name
-					moonCake.m_phone = c.m_phone;
-					moonCake.m_email = c.m_email;
-					moonCake.m_message = c.m_message
-					moonCake.addEventListener(TiMoonCakeEvent.MOONCAKE_CLICK,fnMoonClickHandler);
-				//	moonCake.addEventListener(MouseEvent.MOUSE_OVER,fnSwapMoonDepth);
-					allMoonCakeGp.addElement(moonCake);
 				}
-				if(c.m_mySelf == true)
+				
+				/*if(c.m_mySelf == true)
 				{
 					m_myCustomer = new Customer();
 					m_myCustomer = moonCake;
 					fnMoonClickHandler();
+				}*/
+				
+				fnCreateMyMessage();
+				if(m_bCreateCacheAsBitMapBG)
+				{
+					m_bCreateCacheAsBitMapBG =false;
+					if( m_nCount > AppSetting.m_customerNewHashMap.size() )
+					{
+						var bgCount:int = m_nCount - AppSetting.m_customerNewHashMap.size()
+						var simplemoon:Simplemoon 
+						for(var j:int = 0; j < bgCount; j++)
+						{
+							var poBg:Point = fnRanMoonPositon();
+							simplemoon =new Simplemoon();
+							simplemoon.cacheAsBitmap = true;
+							simplemoon.x = poBg.x 
+							simplemoon.y = poBg.y
+							bgMoonCakeGp.addElement(simplemoon);
+						}
+					}
 				}
+				
 				var ev:TiMoonCakeEvent =new TiMoonCakeEvent(TiMoonCakeEvent.READY,"",true)
 					dispatchEvent(ev);
-				mxPlant.fnSetTotalText();
+				
 			}
 			
+			private function fnCreateMyMessage():void
+			{
+				
+				if(m_myMessageObject !=null)
+				{
+					var moonCake:Customer
+					var po:Point = fnRanMoonPositon();
+					moonCake = new MoonCakeAni();
+					moonCake.m_customerId = AppSetting.m_myMessageId;
+					moonCake.m_po = po;
+					moonCake.m_mySelf = true;
+					moonCake.m_name = m_myMessageObject.m_name
+					moonCake.m_phone = m_myMessageObject.m_phone;
+					moonCake.m_email = m_myMessageObject.m_email;
+					moonCake.m_message = m_myMessageObject.m_message
+					moonCake.addEventListener(TiMoonCakeEvent.MOONCAKE_CLICK,fnMoonClickHandler);
+					allMoonCakeGp.addElement(moonCake);
+					m_myCustomer = moonCake
+					m_xmlDataHandler.fnRequestCountXmlData();
+					fnMoonClickHandler();
+					m_myMessageObject =null
+				}
+			}
 			private function fnRanMoonPositon():Point
 			{
 				var po:Point = fnRanXY();
@@ -275,6 +336,8 @@
 			
 			public function fnAddNewCustomerToServer(c:Customer):void
 			{
+				m_myMessageObject =new Customer();
+				m_myMessageObject = c;
 					m_xmlDataHandler.fnAddNewCustomerToServer(c);
 			}
 			
@@ -305,6 +368,12 @@
 				//resizeGp.y = AppSetting.m_moveY 
 			}
 			
+			private function fnGetCountHandler(e:TiMoonCakeEvent):void
+			{
+				m_nCount = e.m_eventArgs; 
+				mxPlant.fnSetTotalText(m_nCount);
+			}
+			
 		]]>
 	</fx:Script>
 	<fx:Declarations>
@@ -317,6 +386,7 @@
 		<local:moonCakeStage id="mcMoonCakeStage" visible="false" />
 		<local:mc_footer y="0"/>
 		<local:Plant id="mxPlant"/>
+		<s:Group id="bgMoonCakeGp" visible="false"/>
 		<s:Group id="allMoonCakeGp" visible="false"/>
 		<local:btn_addmessage id="mcbtnAddMessage" x="0" y="0" />
 		<local:Footer id="mxFooter" y="0"/>

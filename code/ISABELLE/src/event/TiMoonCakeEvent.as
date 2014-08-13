@@ -11,6 +11,7 @@ package event
 	{
 		public static const MOONCAKE_CLICK:String="MOONCAKE_CLICK"
 		public static const GET_XML_CUSTOMER_DATA:String="GET_XML_CUSTOMER_DATA"
+		public static const GET_XML_CUSTOMER_COUNT_DATA:String="GET_XML_CUSTOMER_COUNT_DATA"
 		public static const ADD_CUSTOMER_DATA:String="ADD_CUSTOMER_DATA"
 		public static const CLOSE_NEW_MESSAGE:String="CLOSE_NEW_MESSAGE"
 		public static const CLOSE_POPUP_MSESSAGE:String="CLOSE_POPUP_MSESSAGE"

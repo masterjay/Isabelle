@@ -114,5 +114,27 @@ package handler
 			}
 			
 		}
+		
+		public function fnRequestCountXmlData():void
+		{
+			var httpHelper:lib.TiHttpRequestHelper=new TiHttpRequestHelper();
+			httpHelper.addEventListener(Event.COMPLETE, fnGetCountXmlDataHandler);
+			var httpVars:URLVariables=new URLVariables();
+			//httpVars.productID=productID;
+			//httpVars.dealerID=dealerID;
+			httpHelper.fnSendRequest(AppSetting.GET_COUNT, httpVars);
+		}
+		
+		private function fnGetCountXmlDataHandler(e:Event):void
+		{
+			var xml:XML = XML(e.currentTarget.data);
+			
+			var str:String = xml.Count
+			str = str.replace(",","");
+			var nCount:int = int(str);
+			var ev :TiMoonCakeEvent =new TiMoonCakeEvent(TiMoonCakeEvent.GET_XML_CUSTOMER_COUNT_DATA);
+			ev.m_eventArgs = nCount;
+			dispatchEvent(ev);
+		}
 	}
 }
