@@ -18,7 +18,7 @@
 			{
 				// TODO Auto-generated method stub
 				mcPlant.addEventListener(Event.ENTER_FRAME,fnOnEnterFrame);
-				mcPlant.gotoAndPlay(1)
+				mcPlant.gotoAndStop(60)
 				mcTotal.txt_total.text = "";
 				
 				//m_txt.background=true;
